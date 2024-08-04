@@ -1,4 +1,4 @@
-# sv_SE.tengo
+// sv_SE.tengo
 
 day_names := ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"]
 month_names := ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"]
@@ -9,12 +9,12 @@ holidays := [
     {date: "2024-01-01", description: "Nyårsdagen", flag_day: true},
     {date: "2024-06-06", description: "Sveriges nationaldag", flag_day: true},
     {date: "2024-12-25", description: "Juldagen", flag_day: true},
-    {date: "2024-12-26", description: "Annandag jul", flag_day: true},
+    {date: "2024-12-26", description: "Annandag jul", flag_day: true}
 ]
 
 special_days := [
     {date: "2024-04-30", description: "Valborgsmässoafton", flag_day: true},
-    {date: "2024-11-01", description: "Allhelgonadagen", flag_day: false},
+    {date: "2024-11-01", description: "Allhelgonadagen", flag_day: false}
 ]
 
 special_periods := [
@@ -26,10 +26,10 @@ special_periods := [
     {name: "Pingstdagen", tengo_script: `result = add_days(year, month, day, 49) == [year, month, day] and is_easter(year, month, day)`},
     {name: "Midsommarafton", tengo_script: `result = month == 6 and (day >= 19 and day <= 25) and weekday == 5`},
     {name: "Midsommardagen", tengo_script: `result = month == 6 and (day >= 20 and day <= 26) and weekday == 6`},
-    {name: "Alla helgons dag", tengo_script: `result = month == 11 and (day >= 1 and day <= 7) and weekday == 6`},
+    {name: "Alla helgons dag", tengo_script: `result = month == 11 and (day >= 1 and day <= 7) and weekday == 6`}
 ]
 
-# Custom functions
+// Custom functions
 func FormatDate(day, month int, month_abbrev string) string {
     return sprintf("%d %s", day, month_abbrev)
 }

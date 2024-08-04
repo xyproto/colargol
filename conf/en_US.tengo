@@ -1,4 +1,4 @@
-# en_US.tengo
+// en_US.tengo
 
 day_names := ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 month_names := ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -8,12 +8,12 @@ monday_first := false
 holidays := [
     {date: "2024-01-01", description: "New Year's Day", flag_day: true},
     {date: "2024-07-04", description: "Independence Day", flag_day: true},
-    {date: "2024-12-25", description: "Christmas Day", flag_day: true},
+    {date: "2024-12-25", description: "Christmas Day", flag_day: true}
 ]
 
 special_days := [
     {date: "2024-02-14", description: "Valentine's Day", flag_day: false},
-    {date: "2024-11-28", description: "Thanksgiving Day", flag_day: true},
+    {date: "2024-11-28", description: "Thanksgiving Day", flag_day: true}
 ]
 
 special_periods := [
@@ -22,10 +22,10 @@ special_periods := [
     {name: "Easter Monday", tengo_script: `result = add_days(year, month, day, 1) == [year, month, day] and is_easter(year, month, day)`},
     {name: "Memorial Day", tengo_script: `result = month == 5 and day == (last_monday_of_may(year) == day)`},
     {name: "Labor Day", tengo_script: `result = month == 9 and day == (first_monday_of_september(year) == day)`},
-    {name: "Veterans Day", tengo_script: `result = month == 11 and day == 11`},
+    {name: "Veterans Day", tengo_script: `result = month == 11 and day == 11`}
 ]
 
-# Custom functions
+// Custom functions
 func FormatDate(day, month int, month_abbrev string) string {
     suffix := "th"
     if day == 1 or day == 21 or day == 31 {

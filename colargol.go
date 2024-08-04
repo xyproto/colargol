@@ -100,8 +100,8 @@ func (cc *CustomCalendar) SpecialPeriod(date time.Time) (bool, string) {
 			return false, ""
 		}
 
-		result := compiled.Get("result")
-		if result == nil || result.IsFalsy() {
+		result := compiled.Get("result").Object()
+		if result == nil || isFalsy(result) {
 			return false, ""
 		}
 
@@ -122,30 +122,30 @@ func (cc *CustomCalendar) FormatDate(day, month int, monthAbbrev string) string 
 	cc.script.Add("day", day)
 	cc.script.Add("month", month)
 	cc.script.Add("month_abbrev", monthAbbrev)
-	result, err := cc.script.Run()
+	compiled, err := cc.script.Run()
 	if err != nil {
 		return ""
 	}
-	return result.Get("result").String()
+	return compiled.Get("result").String()
 }
 
 func (cc *CustomCalendar) WeekString(week int) string {
 	cc.script.Add("week", week)
-	result, err := cc.script.Run()
+	compiled, err := cc.script.Run()
 	if err != nil {
 		return ""
 	}
-	return result.Get("result").String()
+	return compiled.Get("result").String()
 }
 
 func (cc *CustomCalendar) DayAndDate(dayName string, day int) string {
 	cc.script.Add("day_name", dayName)
 	cc.script.Add("day", day)
-	result, err := cc.script.Run()
+	compiled, err := cc.script.Run()
 	if err != nil {
 		return ""
 	}
-	return result.Get("result").String()
+	return compiled.Get("result").String()
 }
 
 // NewCalendar creates a new calendar based on the given Tengo configuration file.
@@ -162,11 +162,11 @@ func NewCalendar(tengoConfigPath string) (Calendar, error) {
 	}
 
 	cc := &CustomCalendar{
-		dayNames:       getStringList(compiled.Get("day_names")),
-		monthNames:     getStringList(compiled.Get("month_names")),
-		holidays:       getHolidays(compiled.Get("holidays")),
-		specialDays:    getSpecialDays(compiled.Get("special_days")),
-		specialPeriods: getSpecialPeriods(compiled.Get("special_periods")),
+		dayNames:       getStringList(compiled.Get("day_names").Object()),
+		monthNames:     getStringList(compiled.Get("month_names").Object()),
+		holidays:       getHolidays(compiled.Get("holidays").Object()),
+		specialDays:    getSpecialDays(compiled.Get("special_days").Object()),
+		specialPeriods: getSpecialPeriods(compiled.Get("special_periods").Object()),
 		normalDayDesc:  compiled.Get("normal_day_desc").String(),
 		mondayFirst:    compiled.Get("monday_first").Bool(),
 		script:         script,
@@ -175,8 +175,8 @@ func NewCalendar(tengoConfigPath string) (Calendar, error) {
 	return cc, nil
 }
 
-func getStringList(array tengo.Object) []string {
-	arr := array.(*tengo.Array)
+func getStringList(obj tengo.Object) []string {
+	arr := obj.(*tengo.Array)
 	var list []string
 	for _, item := range arr.Value {
 		list = append(list, item.(*tengo.String).Value)
@@ -184,36 +184,36 @@ func getStringList(array tengo.Object) []string {
 	return list
 }
 
-func getHolidays(array tengo.Object) []Holiday {
-	arr := array.(*tengo.Array)
+func getHolidays(obj tengo.Object) []Holiday {
+	arr := obj.(*tengo.Array)
 	var holidays []Holiday
 	for _, item := range arr.Value {
 		mapItem := item.(*tengo.Map)
 		holidays = append(holidays, Holiday{
 			Date:        mapItem.Value["date"].(*tengo.String).Value,
 			Description: mapItem.Value["description"].(*tengo.String).Value,
-			FlagDay:     !mapItem.Value["flag_day"].IsFalsy(),
+			FlagDay:     !isFalsy(mapItem.Value["flag_day"]),
 		})
 	}
 	return holidays
 }
 
-func getSpecialDays(array tengo.Object) []SpecialDay {
-	arr := array.(*tengo.Array)
+func getSpecialDays(obj tengo.Object) []SpecialDay {
+	arr := obj.(*tengo.Array)
 	var specialDays []SpecialDay
 	for _, item := range arr.Value {
 		mapItem := item.(*tengo.Map)
 		specialDays = append(specialDays, SpecialDay{
 			Date:        mapItem.Value["date"].(*tengo.String).Value,
 			Description: mapItem.Value["description"].(*tengo.String).Value,
-			FlagDay:     !mapItem.Value["flag_day"].IsFalsy(),
+			FlagDay:     !isFalsy(mapItem.Value["flag_day"]),
 		})
 	}
 	return specialDays
 }
 
-func getSpecialPeriods(array tengo.Object) []SpecialPeriod {
-	arr := array.(*tengo.Array)
+func getSpecialPeriods(obj tengo.Object) []SpecialPeriod {
+	arr := obj.(*tengo.Array)
 	var specialPeriods []SpecialPeriod
 	for _, item := range arr.Value {
 		mapItem := item.(*tengo.Map)
@@ -240,7 +240,10 @@ var isEasterFunc = &tengo.UserFunction{
 		year, _ := tengo.ToInt64(args[0])
 		month, _ := tengo.ToInt64(args[1])
 		day, _ := tengo.ToInt64(args[2])
-		return tengo.TrueValue, isEaster(int(year), int(month), int(day))
+		if isEaster(int(year), int(month), int(day)) {
+			return tengo.TrueValue, nil
+		}
+		return tengo.FalseValue, nil
 	},
 }
 
@@ -289,4 +292,11 @@ func isEaster(year, month, day int) bool {
 func addDays(year, month, day, days int) time.Time {
 	date := time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
 	return date.AddDate(0, 0, days)
+}
+
+func isFalsy(obj tengo.Object) bool {
+	if obj == nil {
+		return true
+	}
+	return obj.IsFalsy()
 }

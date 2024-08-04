@@ -1,4 +1,4 @@
-# da_DK.tengo
+// da_DK.tengo
 
 day_names := ["søndag", "mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lørdag"]
 month_names := ["januar", "februar", "marts", "april", "maj", "juni", "juli", "august", "september", "oktober", "november", "december"]
@@ -9,12 +9,12 @@ holidays := [
     {date: "2024-01-01", description: "Nytårsdag", flag_day: true},
     {date: "2024-06-05", description: "Grundlovsdag", flag_day: true},
     {date: "2024-12-25", description: "Juledag", flag_day: false},
-    {date: "2024-12-26", description: "Anden juledag", flag_day: false},
+    {date: "2024-12-26", description: "Anden juledag", flag_day: false}
 ]
 
 special_days := [
     {date: "2024-04-09", description: "Besættelsesdagen", flag_day: true},
-    {date: "2024-05-05", description: "Danmarks befrielse", flag_day: true},
+    {date: "2024-05-05", description: "Danmarks befrielse", flag_day: true}
 ]
 
 special_periods := [
@@ -23,10 +23,10 @@ special_periods := [
     {name: "Langfredag", tengo_script: `result = add_days(year, month, day, -2) == [year, month, day] and is_easter(year, month, day)`},
     {name: "Anden påskedag", tengo_script: `result = add_days(year, month, day, 1) == [year, month, day] and is_easter(year, month, day)`},
     {name: "Kristi Himmelfartsdag", tengo_script: `result = add_days(year, month, day, 39) == [year, month, day] and is_easter(year, month, day)`},
-    {name: "Pinsedag", tengo_script: `result = add_days(year, month, day, 49) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Pinsedag", tengo_script: `result = add_days(year, month, day, 49) == [year, month, day] and is_easter(year, month, day)`}
 ]
 
-# Custom functions
+// Custom functions
 func FormatDate(day, month int, month_abbrev string) string {
     return sprintf("%d. %s", day, month_abbrev)
 }
