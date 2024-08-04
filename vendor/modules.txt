@@ -1,0 +1,5 @@
+# github.com/d5/tengo/v2 v2.17.0
+## explicit; go 1.13
+github.com/d5/tengo/v2
+github.com/d5/tengo/v2/parser
+github.com/d5/tengo/v2/token
