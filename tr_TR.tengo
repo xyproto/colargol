@@ -1,0 +1,41 @@
+# tr_TR.tengo
+
+day_names := ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"]
+month_names := ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
+normal_day_desc := "Sıradan Gün"
+monday_first := true
+
+holidays := [
+    {date: "2024-01-01", description: "Yılbaşı", flag_day: true},
+    {date: "2024-04-23", description: "Ulusal Egemenlik ve Çocuk Bayramı", flag_day: true},
+    {date: "2024-05-01", description: "Emek ve Dayanışma Günü", flag_day: true},
+    {date: "2024-05-19", description: "Atatürk'ü Anma, Gençlik ve Spor Bayramı", flag_day: true},
+    {date: "2024-07-15", description: "Demokrasi ve Milli Birlik Günü", flag_day: true},
+    {date: "2024-08-30", description: "Zafer Bayramı", flag_day: true},
+    {date: "2024-10-29", description: "Cumhuriyet Bayramı", flag_day: true},
+]
+
+special_days := [
+    # Add more special days if needed
+]
+
+special_periods := [
+    {name: "Kurban Bayramı", tengo_script: `result = (month == 8 and day >= 20 and day <= 23)`},
+    {name: "Ramazan Bayramı", tengo_script: `result = (month == 7 and day >= 17 and day <= 19)`},
+    {name: "Easter", tengo_script: `result = is_easter(year, month, day)`},
+    {name: "Good Friday", tengo_script: `result = add_days(year, month, day, -2) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Easter Monday", tengo_script: `result = add_days(year, month, day, 1) == [year, month, day] and is_easter(year, month, day)`},
+]
+
+# Custom functions
+func FormatDate(day, month int, month_abbrev string) string {
+    return sprintf("%d %s", day, month_abbrev)
+}
+
+func WeekString(week int) string {
+    return sprintf("Hafta %d", week)
+}
+
+func DayAndDate(day_name string, day int) string {
+    return sprintf("%s %d", day_name, day)
+}

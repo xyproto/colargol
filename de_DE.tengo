@@ -1,0 +1,39 @@
+# de_DE.tengo
+
+day_names := ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
+month_names := ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
+normal_day_desc := "Alltag"
+monday_first := true
+
+holidays := [
+    {date: "2024-01-01", description: "Neujahr", flag_day: true},
+    {date: "2024-10-03", description: "Tag der Deutschen Einheit", flag_day: true},
+    {date: "2024-12-25", description: "Erster Weihnachtstag", flag_day: false},
+    {date: "2024-12-26", description: "Zweiter Weihnachtstag", flag_day: false},
+]
+
+special_days := [
+    {date: "2024-10-31", description: "Reformationstag", flag_day: false},
+]
+
+special_periods := [
+    {name: "Ostern", tengo_script: `result = is_easter(year, month, day)`},
+    {name: "Karfreitag", tengo_script: `result = add_days(year, month, day, -2) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Ostermontag", tengo_script: `result = add_days(year, month, day, 1) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Christi Himmelfahrt", tengo_script: `result = add_days(year, month, day, 39) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Pfingstmontag", tengo_script: `result = add_days(year, month, day, 50) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Fronleichnam", tengo_script: `result = add_days(year, month, day, 60) == [year, month, day] and is_easter(year, month, day)`},
+]
+
+# Custom functions
+func FormatDate(day, month int, month_abbrev string) string {
+    return sprintf("%d. %s", day, month_abbrev)
+}
+
+func WeekString(week int) string {
+    return sprintf("Woche %d", week)
+}
+
+func DayAndDate(day_name string, day int) string {
+    return sprintf("%s %d.", day_name, day)
+}

@@ -1,0 +1,50 @@
+# nb_NO.tengo
+
+day_names := ["søndag", "mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lørdag"]
+month_names := ["januar", "februar", "mars", "april", "mai", "juni", "juli", "august", "september", "oktober", "november", "desember"]
+normal_day_desc := "Hverdag"
+monday_first := true
+
+holidays := [
+    {date: "2024-01-01", description: "Første nyttårsdag", flag_day: true},
+    {date: "2024-05-01", description: "Arbeidernes dag", flag_day: true},
+    {date: "2024-05-17", description: "Grunnlovsdagen", flag_day: true},
+    {date: "2024-12-25", description: "Første juledag", flag_day: false},
+    {date: "2024-12-26", description: "Andre juledag", flag_day: false},
+]
+
+special_days := [
+    {date: "2024-02-06", description: "Samefolkets dag", flag_day: true},
+    {date: "2024-07-29", description: "Olsok", flag_day: true},
+    {date: "2024-07-04", description: "H.M. Dronning Sonjas fødselsdag", flag_day: true},
+    {date: "2024-02-21", description: "H.M. Kong Harald Vs fødselsdag", flag_day: true},
+    {date: "2024-01-21", description: "H.K.H. Prinsesse Ingrid Alexandras fødselsdag", flag_day: true},
+    {date: "2024-07-20", description: "H.K.H. Kronprins Haakon Magnus' fødselsdag", flag_day: true},
+    {date: "2024-08-19", description: "H.K.H. Kronprinsesse Mette Marits fødselsdag", flag_day: true},
+]
+
+special_periods := [
+    {name: "Påske", tengo_script: `result = is_easter(year, month, day)`},
+    {name: "Skjærtorsdag", tengo_script: `result = add_days(year, month, day, -3) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Langfredag", tengo_script: `result = add_days(year, month, day, -2) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Andre påskedag", tengo_script: `result = add_days(year, month, day, 1) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Kristi himmelfartsdag", tengo_script: `result = add_days(year, month, day, 39) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Pinse", tengo_script: `result = add_days(year, month, day, 49) == [year, month, day] and is_easter(year, month, day)`},
+    {name: "Sankthansaften", tengo_script: `result = month == 6 and day == 23`},
+    {name: "Frigjøringsdagen 1945", tengo_script: `result = month == 5 and day == 8`},
+    {name: "Unionsoppløsningen 1905", tengo_script: `result = month == 6 and day == 7`},
+    {name: "Valgdag", tengo_script: `result = year % 4 == 1 and month == 9 and day == 11`},
+]
+
+# Custom functions
+func FormatDate(day, month int, month_abbrev string) string {
+    return sprintf("%d. %s", day, month_abbrev)
+}
+
+func WeekString(week int) string {
+    return sprintf("Uke %d", week)
+}
+
+func DayAndDate(day_name string, day int) string {
+    return sprintf("%s %d.", day_name, day)
+}
